@@ -1,8 +1,8 @@
 $(function() {
 
   /**
-    @description Randomly assigns the cards in the grid
-    @param {array} Contains a list of strings that name the png file
+    @description Randomly assigns the card images in the grid of cards
+    @param {array} Contains a list of string names of each PNG file
   */
 
   function shuffleCards(baseAry, destination) {
@@ -17,6 +17,20 @@ $(function() {
     }
   }
 
+  // Event listener for clicking on the card
+  $('.card').on('click', function(){
+    const self = $(this);
+
+    // Creates a horizontal flip animation
+    if( self.children('div').hasClass('closed') && compareCards.length < 2 ) {
+      self.toggleClass('card-flip');
+      setTimeout(function(){
+        self.children('div').removeClass('closed');
+        self.removeClass('card-flip');
+      }, 200);
+    }
+  });
+
   const baseDeck = [
     'baseball', 'baseball',
     'book', 'book',
@@ -27,6 +41,7 @@ $(function() {
     'recycling', 'recycling',
     'synthesizer', 'synthesizer'
   ];
+  let compareCards = [];
 
   shuffleCards(baseDeck, $('.pic img'));
 
