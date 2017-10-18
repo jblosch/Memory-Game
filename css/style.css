@@ -1,5 +1,5 @@
 * {
-  box-sizing: border-box;f
+  box-sizing: border-box;
 }
 
 html, body {
@@ -81,10 +81,22 @@ span.info-datum {
   background-size:contain;
   background-origin: content-box;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card-flip {
+  transform: rotateY(90deg);
 }
 
 .pic {
   background-color: #632996;
+}
+
+.open {
+  visibility: visible;
+}
+
+.closed {
   visibility: hidden;
 }
 
