@@ -11,8 +11,12 @@ $(function() {
     'synthesizer', 'synthesizer'
   ];
   let compareCards = [];
+  let clickCount = 0;
   let movesCount = 0;
   let winCount = 0;
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
 
   /**
     @description Randomly assigns the card images in the grid of cards
@@ -50,9 +54,52 @@ $(function() {
     }, 200);
   }
 
+  /**
+    @description Removes stars from rank after a certain number of moves
+  */
+
+  function ratingChange() {
+    const star2 = document.getElementById('rank').childNodes[3];
+    const star3 = document.getElementById('rank').childNodes[5];
+
+    if(movesCount > 12 && movesCount < 17) {
+      $(star3).removeClass('fa-star');
+      $(star3).addClass('fa-star-o');
+    } else if(movesCount >= 17) {
+      $(star3).removeClass('fa-star');
+      $(star3).addClass('fa-star-o');
+      $(star2).removeClass('fa-star');
+      $(star2).addClass('fa-star-o');
+    }
+  }
+
+  /**
+    @description Runs a timer of minutes/seconds, counting up
+  */
+
+  function timer() {
+    seconds++;
+    if(seconds === 60) {
+      minutes++;
+      seconds = 0;
+    }
+    if(minutes === 60) {
+      hour++;
+      minutes = 0;
+      seconds = 0;
+    }
+
+    document.getElementById('minutes').innerHTML = minutes <= 9 ? '0' + minutes : minutes;
+    document.getElementById('seconds').innerHTML = seconds <= 9 ? '0' + seconds : seconds;
+   }
+
   // Event listener for clicking on the card
   $('.card').on('click', function() {
-    console.log();
+    clickCount++;
+    if(clickCount === 1) {
+      timer();
+      setInterval(timer, 1000);
+    }
     const self = $(this);
     // Creates a horizontal flip animation
     if(self.children('div').hasClass('closed') && compareCards.length < 2) {
@@ -69,21 +116,21 @@ $(function() {
           if(first === second) {
             movesCount++;
             $('#moves').text(movesCount);
+            ratingChange();
             winCount++;
             compareCards = [];
           } else {
             movesCount++;
+            ratingChange();
             $('#moves').text(movesCount);
             cardFlip($(compareCards[0]), false);
             cardFlip($(compareCards[1]), false);
             compareCards = [];
           }
         }, 800);
-
       }
     }
   });
 
   shuffleCards(baseDeck, $('.pic img'));
-
 });
