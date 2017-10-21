@@ -60,12 +60,14 @@ $(function() {
   */
 
   function ratingChange() {
-    const star2 = document.getElementById('rank').childNodes[3];
-    const star3 = document.getElementById('rank').childNodes[5];
+    const rank = document.getElementsByClassName('rank');
+    const star3 = rank[rank.length - 1].childNodes[5];
+    const star2 = rank[rank.length - 1].childNodes[3];
 
     if(movesCount > 12 && movesCount < 17) {
       $(star3).removeClass('fa-star');
       $(star3).addClass('fa-star-o');
+
     } else if(movesCount >= 17) {
       $(star3).removeClass('fa-star');
       $(star3).addClass('fa-star-o');
@@ -84,9 +86,10 @@ $(function() {
       minutes++;
       seconds = 0;
     }
-
-    document.getElementById('minutes').innerHTML = minutes <= 9 ? '0' + minutes : minutes;
-    document.getElementById('seconds').innerHTML = seconds <= 9 ? '0' + seconds : seconds;
+    const minutesDisplay = document.getElementsByClassName('minutes');
+    const secondsDisplay = document.getElementsByClassName('seconds');
+    minutesDisplay[minutesDisplay.length - 1].innerHTML = minutes <= 9 ? '0' + minutes : minutes;
+    secondsDisplay[secondsDisplay.length - 1].innerHTML = seconds <= 9 ? '0' + seconds : seconds;
   }
 
   /**
@@ -99,8 +102,8 @@ $(function() {
         stopTimer = true;
         $('.overlay').css('display', 'block');
         $('body').css('position', 'fixed');
-        $('#final-score li:first-child').append($('#rank').clone());
-        $('#final-score li:last-child').append($('#timer').clone());
+        $('#final-score li:first-child').append($('.rank').clone());
+        $('#final-score li:last-child').append($('.timer').clone());
       }
   }
 
