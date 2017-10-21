@@ -17,4 +17,4 @@ This is a game where your aim is to find matching pairs of cards. When all the c
 
 ---
 
-Have fun! :simple-smile:
+Have fun! :smiley:
