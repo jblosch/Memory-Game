@@ -9,16 +9,35 @@
     <script src="https://use.fontawesome.com/145e55f587.js"></script>
   </head>
   <body>
+
+    <div class="overlay">
+      <div class="overlay-content info">
+        <img src="img/winner.jpg" alt="">
+        <ul id="final-score">
+          <li>
+            <p>Rank</p>
+          </li>
+          <li>
+            <p>Time</p>
+          </li>
+        </ul>
+        <h1>Congrats! You won!</h1>
+        <p>(Feels good, doesn't it?)</p>
+        <h3>What should we do to celebrate? Oh, I know...</h3>
+        <button type="button" name="button" id="new-game">Play Again</button>
+      </div>
+    </div>
+
     <header>
       <h1><span>Re</span>Call</h1>
       <div class="info">
-        <ul>
+        <ul id="main-score">
           <li>
             <p>Rank</p>
             <span id="rank" class="info-datum">
-              <i class="fa fa-star fa"></i>
-              <i class="fa fa-star fa"></i>
-              <i class="fa fa-star fa"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
             </span>
           </li>
           <li>

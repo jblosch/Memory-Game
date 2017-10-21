@@ -16,7 +16,7 @@ $(function() {
   let winCount = 0;
   let seconds = 0;
   let minutes = 0;
-  let hours = 0;
+  let stopTimer = false;
 
   /**
     @description Randomly assigns the card images in the grid of cards
@@ -26,10 +26,11 @@ $(function() {
 
   function shuffleCards(baseAry, destination) {
     let shuffledDeck = [];
-    while(baseAry.length) {
-      let randomImage = Math.ceil(Math.random() * baseAry.length - 1);
-      shuffledDeck.push(baseAry[randomImage]);
-      baseAry.splice(randomImage, 1);
+    let tempArray = baseDeck.slice();
+    while(tempArray.length) {
+      let randomImage = Math.ceil(Math.random() * tempArray.length - 1);
+      shuffledDeck.push(tempArray[randomImage]);
+      tempArray.splice(randomImage, 1);
     }
     for(let i = 0; i < destination.length; i++) {
       $(destination[i]).attr('src', 'img/' + shuffledDeck[i] + '.png');
@@ -62,7 +63,7 @@ $(function() {
     const star2 = document.getElementById('rank').childNodes[3];
     const star3 = document.getElementById('rank').childNodes[5];
 
-    if(movesCount > 12 && movesCount < 17) {
+    if(movesCount > 1 && movesCount < 17) {
       $(star3).removeClass('fa-star');
       $(star3).addClass('fa-star-o');
     } else if(movesCount >= 17) {
@@ -83,22 +84,63 @@ $(function() {
       minutes++;
       seconds = 0;
     }
-    if(minutes === 60) {
-      hour++;
-      minutes = 0;
-      seconds = 0;
-    }
 
     document.getElementById('minutes').innerHTML = minutes <= 9 ? '0' + minutes : minutes;
     document.getElementById('seconds').innerHTML = seconds <= 9 ? '0' + seconds : seconds;
-   }
+  }
+
+  /**
+    @description Checks to see if if the player won the game and if so,
+    generates the modal
+  */
+
+  function didYouWin() {
+      if(winCount === 1) {
+        stopTimer = true;
+        $('.overlay').css('display', 'block');
+        $('body').css('position', 'fixed');
+        $('#final-score li:first-child').append($('#rank').clone());
+        $('#final-score li:last-child').append($('#timer').clone());
+      }
+  }
+
+  /**
+    @description Resets game to initial state
+  */
+
+  function restart() {
+    $('.overlay').css('display', 'none');
+    $('body').css('position', 'static');
+    $('.container').find('.pic').addClass('closed');
+    shuffleCards(baseDeck, $('.pic img'));
+    stopTimer = true;
+    compareCards = [];
+    clickCount = 0;
+    movesCount = 0;
+    winCount = 0;
+    seconds = 0;
+    minutes = 0;
+    document.getElementById('main-score').childNodes[1].childNodes[3].childNodes[3].className = 'fa fa-star';
+    document.getElementById('main-score').childNodes[1].childNodes[3].childNodes[5].className = 'fa fa-star';
+    document.getElementById('main-score').childNodes[3].childNodes[3].childNodes[1].innerHTML = "00";
+    document.getElementById('main-score').childNodes[3].childNodes[3].childNodes[3].innerHTML = "00";
+    document.getElementById('moves').innerHTML = '0';
+    $('.container').animate({opacity: '0'}, "slow");
+    $('.container').animate({opacity: '1'}, "slow");
+  }
 
   // Event listener for clicking on the card
   $('.card').on('click', function() {
     clickCount++;
     if(clickCount === 1) {
-      timer();
-      setInterval(timer, 1000);
+      if(stopTimer === false) { timer(); };
+      let tick = setInterval(function() {
+        if(stopTimer) {
+          clearInterval(tick);
+        } else {
+          timer();
+        }
+      }, 1000);
     }
     const self = $(this);
     // Creates a horizontal flip animation
@@ -118,6 +160,7 @@ $(function() {
             $('#moves').text(movesCount);
             ratingChange();
             winCount++;
+            didYouWin();
             compareCards = [];
           } else {
             movesCount++;
@@ -132,5 +175,14 @@ $(function() {
     }
   });
 
+  // Clicking on 'Play Again' button restarts the game
+  $('#new-game').on('click', function() {
+    restart();
+  });
+
+  // Clicking on restart icon restarts the game
+  $('#restart').on('click', function() {
+    restart();
+  });
   shuffleCards(baseDeck, $('.pic img'));
 });
