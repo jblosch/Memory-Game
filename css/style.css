@@ -131,10 +131,6 @@ span.info-datum {
   background-color: #632996;
 }
 
-.open {
-  visibility: visible;
-}
-
 .closed {
   visibility: hidden;
 }

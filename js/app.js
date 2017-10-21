@@ -63,7 +63,7 @@ $(function() {
     const star2 = document.getElementById('rank').childNodes[3];
     const star3 = document.getElementById('rank').childNodes[5];
 
-    if(movesCount > 1 && movesCount < 17) {
+    if(movesCount > 12 && movesCount < 17) {
       $(star3).removeClass('fa-star');
       $(star3).addClass('fa-star-o');
     } else if(movesCount >= 17) {
@@ -95,7 +95,7 @@ $(function() {
   */
 
   function didYouWin() {
-      if(winCount === 1) {
+      if(winCount === 8) {
         stopTimer = true;
         $('.overlay').css('display', 'block');
         $('body').css('position', 'fixed');
@@ -133,7 +133,8 @@ $(function() {
   $('.card').on('click', function() {
     clickCount++;
     if(clickCount === 1) {
-      if(stopTimer === false) { timer(); };
+      stopTimer = false;
+      timer();
       let tick = setInterval(function() {
         if(stopTimer) {
           clearInterval(tick);
