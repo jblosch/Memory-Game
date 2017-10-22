@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
 
   const baseDeck = [
     'baseball', 'baseball',
@@ -60,9 +60,8 @@ $(function() {
   */
 
   function ratingChange() {
-    const rank = document.getElementsByClassName('rank');
-    const star3 = rank[rank.length - 1].childNodes[5];
-    const star2 = rank[rank.length - 1].childNodes[3];
+    const star3 = $('.rank:last').find('i').eq(2);
+    const star2 = $('.rank:last').find('i').eq(1);
 
     if(movesCount > 12 && movesCount < 17) {
       $(star3).removeClass('fa-star');
@@ -86,10 +85,9 @@ $(function() {
       minutes++;
       seconds = 0;
     }
-    const minutesDisplay = document.getElementsByClassName('minutes');
-    const secondsDisplay = document.getElementsByClassName('seconds');
-    minutesDisplay[minutesDisplay.length - 1].innerHTML = minutes <= 9 ? '0' + minutes : minutes;
-    secondsDisplay[secondsDisplay.length - 1].innerHTML = seconds <= 9 ? '0' + seconds : seconds;
+
+    $('.minutes:last').html(minutes <= 9 ? '0' + minutes : minutes);
+    $('.seconds:last').html(seconds <= 9 ? '0' + seconds : seconds);
   }
 
   /**
@@ -98,12 +96,12 @@ $(function() {
   */
 
   function didYouWin() {
-      if(winCount === 8) {
+      if(winCount === 1) {
         stopTimer = true;
         $('.overlay').css('display', 'block');
         $('body').css('position', 'fixed');
-        $('#final-score li:first-child').append($('.rank').clone());
-        $('#final-score li:last-child').append($('.timer').clone());
+        $('.rank:first').append($('.rank:last').clone());
+        $('.timer:first').append($('.timer:last').clone());
       }
   }
 
@@ -123,11 +121,13 @@ $(function() {
     winCount = 0;
     seconds = 0;
     minutes = 0;
-    document.getElementById('main-score').childNodes[1].childNodes[3].childNodes[3].className = 'fa fa-star';
-    document.getElementById('main-score').childNodes[1].childNodes[3].childNodes[5].className = 'fa fa-star';
-    document.getElementById('main-score').childNodes[3].childNodes[3].childNodes[1].innerHTML = "00";
-    document.getElementById('main-score').childNodes[3].childNodes[3].childNodes[3].innerHTML = "00";
-    document.getElementById('moves').innerHTML = '0';
+    $('.rank:first').find('*').remove();
+    $('.timer:first').find('*').remove();
+    $('.rank:last').find('i').eq(2).attr('class', 'fa fa-star');
+    $('.rank:last').find('i').eq(1).attr('class', 'fa fa-star');
+    $('.minutes:last').html('00');
+    $('.seconds:last').html('00');
+    $('#moves').html('0');
     $('.container').animate({opacity: '0'}, "slow");
     $('.container').animate({opacity: '1'}, "slow");
   }
