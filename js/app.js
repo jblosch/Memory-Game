@@ -63,7 +63,7 @@ $(document).ready(function() {
     const star3 = $('.rank:last').find('i').eq(2);
     const star2 = $('.rank:last').find('i').eq(1);
 
-    if(movesCount > 12 && movesCount < 17) {
+    if(movesCount > 14 && movesCount < 17) {
       $(star3).removeClass('fa-star');
       $(star3).addClass('fa-star-o');
 
@@ -96,7 +96,7 @@ $(document).ready(function() {
   */
 
   function didYouWin() {
-      if(winCount === 1) {
+      if(winCount === 8) {
         stopTimer = true;
         $('.overlay').css('display', 'block');
         $('body').css('position', 'fixed');
@@ -128,8 +128,8 @@ $(document).ready(function() {
     $('.minutes:last').html('00');
     $('.seconds:last').html('00');
     $('#moves').html('0');
-    $('.container').animate({opacity: '0'}, "slow");
-    $('.container').animate({opacity: '1'}, "slow");
+    $('.container').animate({opacity: '0'}, 250);
+    $('.container').animate({opacity: '1'}, 250);
   }
 
   // Event listener for clicking on the card
@@ -157,8 +157,9 @@ $(document).ready(function() {
       // Compares the cards and generates consequences
       if(compareCards.length === 2) {
         setTimeout(function() {
-          let first = compareCards[0][0].childNodes[1].childNodes[1].getAttribute('src');
-          let second = compareCards[1][0].childNodes[1].childNodes[1].getAttribute('src');
+
+          let first = $(compareCards[0]).find('img').attr('src');
+          let second = $(compareCards[1]).find('img').attr('src');
           if(first === second) {
             movesCount++;
             $('#moves').text(movesCount);
